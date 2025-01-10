@@ -125,12 +125,15 @@ while True:
     snake_body.insert(0, list(snake_position))
     
     # Check for collision with any fruit
-    if snake_position in fruit_positions:
-        score += 10
-        fruit_positions.remove(snake_position)
-        # Spawn new fruit
-        fruit_positions.append([random.randrange(1, (window_x // 10)) * 10,
-                                random.randrange(1, (window_y // 10)) * 10])
+    for fruit_position in fruit_positions:
+        if (snake_position[0] in range(fruit_position[0], fruit_position[0] + 40) and
+            snake_position[1] in range(fruit_position[1], fruit_position[1] + 40)):
+            score += 10
+            fruit_positions.remove(fruit_position)
+            # Spawn new fruit
+            fruit_positions.append([random.randrange(1, (window_x // 10)) * 10,
+                                    random.randrange(1, (window_y // 10)) * 10])
+            break
     else:
         snake_body.pop()
 
@@ -142,7 +145,7 @@ while True:
         
     # Draw each fruit in dark blue
     for fruit_position in fruit_positions:
-        pygame.draw.rect(game_window, dark_blue, pygame.Rect(fruit_position[0], fruit_position[1], 10, 10))
+        pygame.draw.rect(game_window, dark_blue, pygame.Rect(fruit_position[0], fruit_position[1], 15, 15))
 
     # Game Over conditions
     if snake_position[0] < 0 or snake_position[0] > window_x - 10:
